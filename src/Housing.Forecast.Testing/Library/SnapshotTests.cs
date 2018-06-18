@@ -7,6 +7,17 @@ namespace Housing.Forecast.Testing.Library
 {
   public class SnapshotTests
   {
+    private Snapshot getTestSnapshot() {
+      Snapshot result = new Snapshot{
+          Id = Guid.NewGuid(),
+          Date = new DateTime(2018, 1, 1),
+          Location = "Reston",
+          RoomOccupancyCount = 1,
+          UserCount = 1
+      };
+      return result;
+    }
+
     [Fact]
     public void DefaultSnapshotInvalidTest() {
       // Arrange
@@ -76,7 +87,7 @@ namespace Housing.Forecast.Testing.Library
     }
 
     [Fact]
-    public void SnapshotRoomCountInvalidTest() {
+    public void SnapshotRoomOccupancyCountInvalidTest() {
       // Arrange
       Snapshot snap = TestDataGenerator.getTestSnapshot();
 
