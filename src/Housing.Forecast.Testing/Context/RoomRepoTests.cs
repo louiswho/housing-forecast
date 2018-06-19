@@ -2,6 +2,7 @@ using System;
 using Xunit;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 
 using Housing.Forecast.Context;
@@ -19,7 +20,7 @@ namespace Housing.Forecast.Testing.Library
             .Options;
 
         [Fact]
-        public void Get_ReturnCollection()
+        public async Task Get_ReturnCollection()
         {
             using(_context = new ForecastContext(options)) {
                 // Arrange
@@ -30,7 +31,7 @@ namespace Housing.Forecast.Testing.Library
                 _context.SaveChanges();
 
                 // Act
-                rooms = _roomRepository.Get();
+                rooms = await _roomRepository.GetAsync();
 
                 // Assert
                 Assert.NotEmpty(rooms);
@@ -38,7 +39,7 @@ namespace Housing.Forecast.Testing.Library
         }
 
         [Fact]
-        public void GetByDate_WithValidDate_ReturnNonEmptyCollection()
+        public async Task GetByDate_WithValidDate_ReturnNonEmptyCollection()
         {
             using(_context = new ForecastContext(options)) {
                 // Arrange
@@ -50,7 +51,7 @@ namespace Housing.Forecast.Testing.Library
                 Room room = _context.Rooms.FirstOrDefault();
 
                 // Act
-                rooms = _roomRepository.GetByDate(room.Created);
+                rooms = await _roomRepository.GetByDateAsync(room.Created);
 
                 // Assert
                 Assert.Equal(rooms.FirstOrDefault().Id, room.Id);
@@ -58,7 +59,7 @@ namespace Housing.Forecast.Testing.Library
         }
 
         [Fact]
-        public void GetByDate_WithInvalidDate_ReturnEmptyCollection() {
+        public async Task GetByDate_WithInvalidDate_ReturnEmptyCollection() {
             using(_context = new ForecastContext(options)) {
                 // Arrange
                 init(_context);
@@ -69,7 +70,7 @@ namespace Housing.Forecast.Testing.Library
                 Room room = _context.Rooms.FirstOrDefault();
 
                 // Act
-                rooms = _roomRepository.GetByDate(DateTime.MinValue);
+                rooms = await _roomRepository.GetByDateAsync(DateTime.MinValue);
 
                 // Assert
                 Assert.Empty(rooms);
@@ -77,7 +78,7 @@ namespace Housing.Forecast.Testing.Library
         }
 
         [Fact]
-        public void GetLocations_ReturnCollection() {
+        public async Task GetLocations_ReturnCollection() {
             using(_context = new ForecastContext(options)) {
                 // Arrange
                 init(_context);
@@ -92,7 +93,7 @@ namespace Housing.Forecast.Testing.Library
                 _context.SaveChanges();
 
                 // Act
-                locations = _roomRepository.GetLocations();
+                locations = await _roomRepository.GetLocationsAsync();
 
                 // Assert
                 Assert.Equal(2, locations.Count());
@@ -100,7 +101,7 @@ namespace Housing.Forecast.Testing.Library
         }
 
         [Fact]
-        public void GetByLocations_ValidDateValidLocation_ReturnNonEmptyCollection() {
+        public async Task GetByLocations_ValidDateValidLocation_ReturnNonEmptyCollection() {
             using(_context = new ForecastContext(options)) {
                 // Arrange
                 init(_context);
@@ -111,7 +112,7 @@ namespace Housing.Forecast.Testing.Library
                 Room room = _context.Rooms.FirstOrDefault();
 
                 // Act
-                rooms = _roomRepository.GetByLocation(room.Created, room.Location);
+                rooms = await _roomRepository.GetByLocationAsync(room.Created, room.Location);
 
                 // Assert
                 Assert.NotEmpty(rooms);
@@ -119,7 +120,7 @@ namespace Housing.Forecast.Testing.Library
         }
 
         [Fact]
-        public void GetByLocations_InvalidDateValidLocation_ReturnEmptyCollection() {
+        public async Task GetByLocations_InvalidDateValidLocation_ReturnEmptyCollection() {
             using(_context = new ForecastContext(options)) {
                 // Arrange
                 init(_context);
@@ -130,7 +131,7 @@ namespace Housing.Forecast.Testing.Library
                 Room room = _context.Rooms.FirstOrDefault();
 
                 // Act
-                rooms = _roomRepository.GetByLocation(DateTime.MinValue, room.Location);
+                rooms = await _roomRepository.GetByLocationAsync(DateTime.MinValue, room.Location);
 
                 // Assert
                 Assert.Empty(rooms);
@@ -138,7 +139,7 @@ namespace Housing.Forecast.Testing.Library
         }
 
         [Fact]
-        public void GetByLocations_ValidDateInvalidLocation_ReturnEmptyCollection() {
+        public async Task GetByLocations_ValidDateInvalidLocation_ReturnEmptyCollection() {
             using(_context = new ForecastContext(options)) {
                 // Arrange
                 init(_context);
@@ -149,7 +150,7 @@ namespace Housing.Forecast.Testing.Library
                 Room room = _context.Rooms.FirstOrDefault();
 
                 // Act
-                rooms = _roomRepository.GetByLocation(room.Created, "Tampa");
+                rooms = await _roomRepository.GetByLocationAsync(room.Created, "Tampa");
 
                 // Assert
                 Assert.Empty(rooms);
@@ -157,7 +158,7 @@ namespace Housing.Forecast.Testing.Library
         }
 
         [Fact]
-        public void GetByLocations_InvalidDateInvalidLocation_ReturnEmptyCollection() {
+        public async Task GetByLocations_InvalidDateInvalidLocation_ReturnEmptyCollection() {
             using(_context = new ForecastContext(options)) {
                 // Arrange
                 init(_context);
@@ -168,7 +169,7 @@ namespace Housing.Forecast.Testing.Library
                 Room room = _context.Rooms.FirstOrDefault();
 
                 // Act
-                rooms = _roomRepository.GetByLocation(DateTime.MinValue, "Tampa");
+                rooms = await _roomRepository.GetByLocationAsync(DateTime.MinValue, "Tampa");
 
                 // Assert
                 Assert.Empty(rooms);

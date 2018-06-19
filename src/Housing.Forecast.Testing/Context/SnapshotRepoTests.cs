@@ -2,6 +2,7 @@ using System;
 using Xunit;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 
 using Housing.Forecast.Context;
@@ -19,7 +20,7 @@ namespace Housing.Forecast.Testing.Context
             .Options;
 
         [Fact]
-        public void Get_ReturnCollection()
+        public async Task Get_ReturnCollection()
         {
             using(_context = new ForecastContext(options)) {
                 // Arrange
@@ -30,7 +31,7 @@ namespace Housing.Forecast.Testing.Context
                 _context.SaveChanges();
 
                 // Act
-                snapshots = _snapshotRepository.Get();
+                snapshots = await _snapshotRepository.GetAsync();
 
                 // Assert
                 Assert.NotEmpty(snapshots);
@@ -38,7 +39,7 @@ namespace Housing.Forecast.Testing.Context
         }
 
         [Fact]
-        public void GetByDate_WithValidDate_ReturnNonEmptyCollection()
+        public async Task GetByDate_WithValidDate_ReturnNonEmptyCollection()
         {
             using(_context = new ForecastContext(options)) {
                 // Arrange
@@ -50,7 +51,7 @@ namespace Housing.Forecast.Testing.Context
                 Snapshot snapshot = _context.Snapshots.FirstOrDefault();
 
                 // Act
-                snapshots = _snapshotRepository.GetByDate(snapshot.Date);
+                snapshots = await _snapshotRepository.GetByDateAsync(snapshot.Date);
 
                 // Assert
                 Assert.Equal(snapshots.FirstOrDefault().Id, snapshot.Id);
@@ -58,7 +59,7 @@ namespace Housing.Forecast.Testing.Context
         }
 
         [Fact]
-        public void GetByDate_WithInvalidDate_ReturnEmptyCollection() {
+        public async Task GetByDate_WithInvalidDate_ReturnEmptyCollection() {
             using(_context = new ForecastContext(options)) {
                 // Arrange
                 init(_context);
@@ -69,7 +70,7 @@ namespace Housing.Forecast.Testing.Context
                 Snapshot snapshot = _context.Snapshots.FirstOrDefault();
 
                 // Act
-                snapshots = _snapshotRepository.GetByDate(DateTime.MinValue);
+                snapshots = await _snapshotRepository.GetByDateAsync(DateTime.MinValue);
 
                 // Assert
                 Assert.Empty(snapshots);
@@ -77,7 +78,7 @@ namespace Housing.Forecast.Testing.Context
         }
 
         [Fact]
-        public void GetLocations_ReturnCollection() {
+        public async Task GetLocations_ReturnCollection() {
             using(_context = new ForecastContext(options)) {
                 // Arrange
                 init(_context);
@@ -92,7 +93,7 @@ namespace Housing.Forecast.Testing.Context
                 _context.SaveChanges();
 
                 // Act
-                locations = _snapshotRepository.GetLocations();
+                locations = await _snapshotRepository.GetLocationsAsync();
 
                 // Assert
                 Assert.Equal(2, locations.Count());
@@ -100,7 +101,7 @@ namespace Housing.Forecast.Testing.Context
         }
 
         [Fact]
-        public void GetByLocation_ValidDateValidLocation_ReturnNonEmptyCollection() {
+        public async Task GetByLocation_ValidDateValidLocation_ReturnNonEmptyCollection() {
             using(_context = new ForecastContext(options)) {
                 // Arrange
                 init(_context);
@@ -111,7 +112,7 @@ namespace Housing.Forecast.Testing.Context
                 Snapshot snapshot = _context.Snapshots.FirstOrDefault();
 
                 // Act
-                snapshots = _snapshotRepository.GetByLocation(snapshot.Date, snapshot.Location);
+                snapshots = await _snapshotRepository.GetByLocationAsync(snapshot.Date, snapshot.Location);
 
                 // Assert
                 Assert.NotEmpty(snapshots);
@@ -119,7 +120,7 @@ namespace Housing.Forecast.Testing.Context
         }
 
         [Fact]
-        public void GetByLocation_InvalidDateValidLocation_ReturnEmptyCollection() {
+        public async Task GetByLocation_InvalidDateValidLocation_ReturnEmptyCollection() {
             using(_context = new ForecastContext(options)) {
                 // Arrange
                 init(_context);
@@ -130,7 +131,7 @@ namespace Housing.Forecast.Testing.Context
                 Snapshot snapshot = _context.Snapshots.FirstOrDefault();
 
                 // Act
-                snapshots = _snapshotRepository.GetByLocation(DateTime.MinValue, snapshot.Location);
+                snapshots = await _snapshotRepository.GetByLocationAsync(DateTime.MinValue, snapshot.Location);
 
                 // Assert
                 Assert.Empty(snapshots);
@@ -138,7 +139,7 @@ namespace Housing.Forecast.Testing.Context
         }
 
         [Fact]
-        public void GetByLocation_ValidDateInvalidLocation_ReturnEmptyCollection() {
+        public async Task GetByLocation_ValidDateInvalidLocation_ReturnEmptyCollection() {
             using(_context = new ForecastContext(options)) {
                 // Arrange
                 init(_context);
@@ -149,7 +150,7 @@ namespace Housing.Forecast.Testing.Context
                 Snapshot snapshot = _context.Snapshots.FirstOrDefault();
 
                 // Act
-                snapshots = _snapshotRepository.GetByLocation(snapshot.Date, "Tampa");
+                snapshots = await _snapshotRepository.GetByLocationAsync(snapshot.Date, "Tampa");
 
                 // Assert
                 Assert.Empty(snapshots);
@@ -157,7 +158,7 @@ namespace Housing.Forecast.Testing.Context
         }
 
         [Fact]
-        public void GetByLocation_InvalidDateInvalidLocation_ReturnEmptyCollection() {
+        public async Task GetByLocation_InvalidDateInvalidLocation_ReturnEmptyCollection() {
             using(_context = new ForecastContext(options)) {
                 // Arrange
                 init(_context);
@@ -168,7 +169,7 @@ namespace Housing.Forecast.Testing.Context
                 Snapshot snapshot = _context.Snapshots.FirstOrDefault();
 
                 // Act
-                snapshots = _snapshotRepository.GetByLocation(DateTime.MinValue, "Tampa");
+                snapshots = await _snapshotRepository.GetByLocationAsync(DateTime.MinValue, "Tampa");
 
                 // Assert
                 Assert.Empty(snapshots);

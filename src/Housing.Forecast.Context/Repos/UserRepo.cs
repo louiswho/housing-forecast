@@ -2,8 +2,10 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading.Tasks;
 using Housing.Forecast.Context;
 using Housing.Forecast.Context.Models;
+using Microsoft.EntityFrameworkCore;
 
 namespace Housing.Forecast.Context.Repos
 {
@@ -15,24 +17,35 @@ namespace Housing.Forecast.Context.Repos
             _context = context;
         }
 
-        public IEnumerable<string> GetLocations()
+        /// <summary>
+        /// Find all of the distinct locations for every snapshot.
+        /// </summary>
+        /// <returns>
+        /// This method will return a list of all distinct locations for the snapshots within the database.
+        /// </returns>
+        public async Task<IList<string>> GetLocationsAsync()
         {
-            return _context.Users.Select(r => r.Location).Where(r => r != null).Distinct();
+            return await _context.Users.Select(s => s.Location).Where(s => s != null).Distinct().ToListAsync();
         }
 
-        public IEnumerable<User> Get()
+        public async Task<IList<User>> GetAsync()
         {
-            return _context.Users;
+            return await _context.Users.Where(s => s != null).ToListAsync();
         }
 
-        public IEnumerable<User> GetByLocation(DateTime datetime, string location)
+        public async Task<IList<User>> GetByLocationAsync(DateTime datetime, string location)
         {
-            return _context.Users.Where(r => r.Created.Date <= datetime.Date && (r.Deleted.Value == null || r.Deleted.Value.Date > datetime.Date) && r.Location == location);
+            return await _context.Users.Where(r =>
+                r.Created.Date <= datetime.Date && (r.Deleted.Value == null || r.Deleted.Value.Date > datetime.Date) &&
+                r.Location == location).ToListAsync();
         }
 
-        public IEnumerable<User> GetByDate(DateTime datetime)
+        public async Task<IList<User>> GetByDateAsync(DateTime datetime)
         {
-            return _context.Users.Where(u => u.Created.Date <= datetime.Date && (u.Deleted.Value == null || u.Deleted.Value.Date > datetime.Date));
+            return await _context.Users.Where(u =>
+                    u.Created.Date <= datetime.Date &&
+                    (u.Deleted.Value == null || u.Deleted.Value.Date > datetime.Date))
+                .ToListAsync();
         }
     }
 }

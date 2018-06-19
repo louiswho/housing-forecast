@@ -1,6 +1,7 @@
 ﻿using Housing.Forecast.Context.ApiAccessors;
 using Housing.Forecast.Context.Models;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace Housing.Forecast.Context
 {
@@ -8,11 +9,9 @@ namespace Housing.Forecast.Context
     {
         void OnStart();
         void OnStop();
-        void Update();
+        Task Update();
         void Poll();
-        void UpdateAddress(Address check);
         void UpdateBatches(ICollection<Batch> Batch);
-        void UpdateName(Name check);
         void UpdateRooms(ICollection<Room> Rooms);
         void UpdateUsers(ICollection<User> Users);
     }

@@ -2,6 +2,7 @@ using System;
 using Xunit;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 
 using Housing.Forecast.Context;
@@ -19,7 +20,7 @@ namespace Housing.Forecast.Testing.Context
             .Options;
 
         [Fact]
-        public void Get_ReturnCollection()
+        public async Task Get_ReturnCollection()
         {
             using(_context = new ForecastContext(options)) {
                 // Arrange
@@ -30,7 +31,7 @@ namespace Housing.Forecast.Testing.Context
                 _context.SaveChanges();
 
                 // Act
-                users = _userRepository.Get();
+                users = await _userRepository.GetAsync();
 
                 // Assert
                 Assert.NotEmpty(users);
@@ -38,7 +39,7 @@ namespace Housing.Forecast.Testing.Context
         }
 
         [Fact]
-        public void GetByDate_WithValidDate_ReturnNonEmptyCollection()
+        public async Task GetByDate_WithValidDate_ReturnNonEmptyCollection()
         {
             using(_context = new ForecastContext(options)) {
                 // Arrange
@@ -50,7 +51,7 @@ namespace Housing.Forecast.Testing.Context
                 User user = _context.Users.FirstOrDefault();
 
                 // Act
-                users = _userRepository.GetByDate(user.Created);
+                users = await _userRepository.GetByDateAsync(user.Created);
 
                 // Assert
                 Assert.Equal(users.FirstOrDefault().Id, user.Id);
@@ -58,7 +59,7 @@ namespace Housing.Forecast.Testing.Context
         }
 
         [Fact]
-        public void GetByDate_WithInvalidDate_ReturnEmptyCollection() {
+        public async Task GetByDate_WithInvalidDate_ReturnEmptyCollection() {
             using(_context = new ForecastContext(options)) {
                 // Arrange
                 init(_context);
@@ -69,7 +70,7 @@ namespace Housing.Forecast.Testing.Context
                 User user = _context.Users.FirstOrDefault();
 
                 // Act
-                users = _userRepository.GetByDate(DateTime.MinValue);
+                users = await _userRepository.GetByDateAsync(DateTime.MinValue);
 
                 // Assert
                 Assert.Empty(users);
@@ -77,7 +78,7 @@ namespace Housing.Forecast.Testing.Context
         }
 
         [Fact]
-        public void GetLocations_ReturnCollection() {
+        public async Task GetLocations_ReturnCollection() {
             using(_context = new ForecastContext(options)) {
                 // Arrange
                 init(_context);
@@ -92,7 +93,7 @@ namespace Housing.Forecast.Testing.Context
                 _context.SaveChanges();
 
                 // Act
-                locations = _userRepository.GetLocations();
+                locations = await _userRepository.GetLocationsAsync();
 
                 // Assert
                 Assert.Equal(2, locations.Count());
@@ -100,7 +101,7 @@ namespace Housing.Forecast.Testing.Context
         }
 
         [Fact]
-        public void GetByLocations_ValidDateValidLocation_ReturnNonEmptyCollection() {
+        public async Task GetByLocations_ValidDateValidLocation_ReturnNonEmptyCollection() {
             using(_context = new ForecastContext(options)) {
                 // Arrange
                 init(_context);
@@ -111,7 +112,7 @@ namespace Housing.Forecast.Testing.Context
                 User user = _context.Users.FirstOrDefault();
 
                 // Act
-                users = _userRepository.GetByLocation(user.Created, user.Location);
+                users = await _userRepository.GetByLocationAsync(user.Created, user.Location);
 
                 // Assert
                 Assert.NotEmpty(users);
@@ -119,7 +120,7 @@ namespace Housing.Forecast.Testing.Context
         }
 
         [Fact]
-        public void GetByLocations_InvalidDateValidLocation_ReturnEmptyCollection() {
+        public async Task GetByLocations_InvalidDateValidLocation_ReturnEmptyCollection() {
             using(_context = new ForecastContext(options)) {
                 // Arrange
                 init(_context);
@@ -130,7 +131,7 @@ namespace Housing.Forecast.Testing.Context
                 User user = _context.Users.FirstOrDefault();
 
                 // Act
-                users = _userRepository.GetByLocation(DateTime.MinValue, user.Location);
+                users = await _userRepository.GetByLocationAsync(DateTime.MinValue, user.Location);
 
                 // Assert
                 Assert.Empty(users);
@@ -138,7 +139,7 @@ namespace Housing.Forecast.Testing.Context
         }
 
         [Fact]
-        public void GetByLocations_ValidDateInvalidLocation_ReturnEmptyCollection() {
+        public async Task GetByLocations_ValidDateInvalidLocation_ReturnEmptyCollection() {
             using(_context = new ForecastContext(options)) {
                 // Arrange
                 init(_context);
@@ -149,7 +150,7 @@ namespace Housing.Forecast.Testing.Context
                 User user = _context.Users.FirstOrDefault();
 
                 // Act
-                users = _userRepository.GetByLocation(user.Created, "Tampa");
+                users = await _userRepository.GetByLocationAsync(user.Created, "Tampa");
 
                 // Assert
                 Assert.Empty(users);
@@ -157,7 +158,7 @@ namespace Housing.Forecast.Testing.Context
         }
 
         [Fact]
-        public void GetByLocations_InvalidDateInvalidLocation_ReturnEmptyCollection() {
+        public async Task GetByLocations_InvalidDateInvalidLocation_ReturnEmptyCollection() {
             using(_context = new ForecastContext(options)) {
                 // Arrange
                 init(_context);
@@ -168,7 +169,7 @@ namespace Housing.Forecast.Testing.Context
                 User user = _context.Users.FirstOrDefault();
 
                 // Act
-                users = _userRepository.GetByLocation(DateTime.MinValue, "Tampa");
+                users = await _userRepository.GetByLocationAsync(DateTime.MinValue, "Tampa");
 
                 // Assert
                 Assert.Empty(users);

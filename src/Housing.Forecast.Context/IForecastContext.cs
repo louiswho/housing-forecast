@@ -1,6 +1,8 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Threading;
+using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
 using Housing.Forecast.Context.Models;
@@ -17,5 +19,6 @@ namespace Housing.Forecast.Context
         DbSet<Snapshot> Snapshots { get; set; }
         DbSet<User> Users { get; set; }
         int SaveChanges();
+        Task<int> SaveChangesAsync(CancellationToken token);
     }
 }
