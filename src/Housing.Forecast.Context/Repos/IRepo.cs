@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace Housing.Forecast.Context.Repos
 {
@@ -12,7 +13,7 @@ namespace Housing.Forecast.Context.Repos
         /// <returns>
         /// The method will return a list of City names for where rooms for housing are located in.
         /// </returns>
-        IEnumerable<string> GetLocations();
+        Task<IList<string>> GetLocationsAsync();
 
         /// <summary>
         /// Find all stored T within the database.
@@ -20,7 +21,7 @@ namespace Housing.Forecast.Context.Repos
         /// <returns>
         /// The method should return a list of all type T objects within the database.
         /// </returns>
-        IEnumerable<T> Get();
+        Task<IList<T>> GetAsync();
 
         /// <summary>
         /// Find all stored type T objects from the database using the starting point.
@@ -29,7 +30,7 @@ namespace Housing.Forecast.Context.Repos
         /// <returns>
         /// The method should return a list of all type T objects within the database that were created on/after the provided date.
         /// </returns>
-        IEnumerable<T> GetByDate(DateTime datetime);
+        Task<IList<T>> GetByDateAsync(DateTime datetime);
 
         /// <summary>
         /// Find all stored type T objects from the database using the starting point.
@@ -40,6 +41,6 @@ namespace Housing.Forecast.Context.Repos
         /// The method should return a list of all type T objects within the database that were created on/after the provided date
         /// and are located at the location provided.
         /// </returns>
-        IEnumerable<T> GetByLocation(DateTime datetime, string location);
+        Task<IList<T>> GetByLocationAsync(DateTime datetime, string location);
     }
 }

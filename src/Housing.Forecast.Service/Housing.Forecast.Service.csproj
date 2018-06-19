@@ -13,8 +13,11 @@
     <PackageReference Include="microsoft.applicationinsights" Version="2.5.1" />
     <PackageReference Include="microsoft.applicationinsights.aspnetcore" Version="2.2.1" />
     <PackageReference Include="Microsoft.AspNetCore.All" Version="2.0.7" />
-    <PackageReference Include="microsoft.azure.servicebus" Version="3.0.0" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="2.0.3" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="2.0.3" />
     <PackageReference Include="newtonsoft.json" Version="11.0.2" />
+
+    <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="2.0.2" />
   </ItemGroup>
 
   <ItemGroup>
@@ -22,7 +25,10 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\Housing.Forecast.Context\Housing.Forecast.Context.csproj" />
     <ProjectReference Include="..\Housing.Forecast.Library\Housing.Forecast.Library.csproj" />
   </ItemGroup>
+
+  <ProjectExtensions><VisualStudio><UserProperties appsettings_1json__JSONSchema="" /></VisualStudio></ProjectExtensions>
 
 </Project>
