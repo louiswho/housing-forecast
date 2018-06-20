@@ -34,8 +34,8 @@ namespace Housing.Forecast.Context
         /// Constructor for the Poller
         /// </summary>
         /// <remarks>
-        /// Passes in the forecast context and the interval.
-        /// Not sure how to inject the context from this project,
+        /// Passes in the forecast context and the interval. 
+        /// Not sure how to inject the context from this project, 
         /// since it's not running in the Service Project where
         /// we can register it with startup.
         /// </remarks>
@@ -50,7 +50,7 @@ namespace Housing.Forecast.Context
         /// Starts the Poller object's task
         /// </summary>
         /// <remarks>
-        /// Setting up a task to run asynchronously in the background.
+        /// Setting up a task to run asynchronously in the background. 
         /// </remarks>
         public void OnStart()
         {
@@ -76,7 +76,7 @@ namespace Housing.Forecast.Context
         /// </summary>
         /// <remarks>
         /// Separated out the logic for this since it'd be
-        /// duplicated in UpdateUsers and UpdateRooms.
+        /// duplicated in UpdateUsers and UpdateRooms. 
         /// Basically we check to see if the address is new. If so,
         /// we add it. Otherwise we check to see if data is modified
         /// and then update appropriately. Changes are saved after this function
@@ -107,7 +107,7 @@ namespace Housing.Forecast.Context
         /// Update individual names
         /// </summary>
         /// <remarks>
-        /// Same as with Addresses in terms of logic.
+        /// Same as with Addresses in terms of logic. 
         /// Felt neater to separate this out into a separate method,
         /// even though it's only necessary in UpdateUsers.
         /// Changes are saved after this function is called, so the
@@ -132,10 +132,10 @@ namespace Housing.Forecast.Context
         }
 
         /// <summary>
-        /// Updates Batches using the batch servicehub endpoint
+        /// Updates Batches using the batch servicehub endpoint 
         /// </summary>
         /// <remarks>
-        /// An except for the deleted entries, and a couple joins
+        /// An except for the deleted entries, and a couple joins 
         /// for the new and different entries. Deleted sets datetime
         /// equal to today if it's not already set. New adds the new entry completely
         /// and diff changes values if there are any modified values.
@@ -189,7 +189,7 @@ namespace Housing.Forecast.Context
         /// Update Users using the Users servicehub endpoint
         /// </summary>
         /// <remarks>
-        /// Same logic as UpdateBatch, except we also need to update
+        /// Same logic as UpdateBatch, except we also need to update 
         /// address and name before adding a new user to insure
         /// that those are in the tables that the User will have
         /// a relation to.
@@ -384,7 +384,7 @@ namespace Housing.Forecast.Context
         /// is requested. Exception for some logging.
         /// Potentially add retry pattern if db connection failed.
         /// </remarks>
-        public async Task Poll()
+        public async void Poll()
         {
             CancellationToken cancellation = cts.Token;
             TimeSpan interval = _interval;
