@@ -23,7 +23,7 @@ namespace Housing.Forecast.Service
 
             var context = services.GetRequiredService<ForecastContext>();
             context.Database.EnsureCreated();
-            Seeder.Initialize(services);
+            Seeder.Initialize(services).Wait();
         }
         host.Run();
 
