@@ -12,6 +12,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
+using Swashbuckle.AspNetCore.Swagger;
 
 namespace Housing.Forecast.Service
 {
@@ -32,6 +33,11 @@ namespace Housing.Forecast.Service
             services.AddTransient<IRepo<Room>, RoomRepo>();
             services.AddTransient<ISnapshotRepo, SnapshotRepo>();
             services.AddMvc();
+
+            services.AddSwaggerGen(c =>
+            {
+                c.SwaggerDoc("v1", new Info { Title = "Revature Housing Forecast API", Version = "v1" });
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -43,6 +49,14 @@ namespace Housing.Forecast.Service
             {
                 app.UseDeveloperExceptionPage();
             }
+
+            app.UseSwagger();
+
+            app.UseSwaggerUI(c =>
+            {
+                c.SwaggerEndpoint("/swagger/v1/swagger.json",
+                    "Revature Housing Forecast API");
+            });
 
             app.UseMvc();
         }
