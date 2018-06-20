@@ -12,6 +12,6 @@ namespace Housing.Forecast.Context.Repos
 
         Task<IList<Snapshot>> GetBetweenDatesAtLocationAsync(DateTime Start, DateTime End, string location);
 
-        Task<bool> AddSnapshotsAsync(IEnumerable<Snapshot> snapshots);
+        Task AddSnapshotsAsync(IEnumerable<Snapshot> snapshots);
     }
 }
