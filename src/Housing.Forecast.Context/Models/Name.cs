@@ -51,7 +51,6 @@ namespace Housing.Forecast.Context.Models
 
         public string Last { get; set; }
 
-        [Column(TypeName = "datetime2")]
         public DateTime Created { get; set; }
 
         [JsonIgnore]

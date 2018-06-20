@@ -37,7 +37,6 @@ namespace Housing.Forecast.Context.Models
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public Guid Id { get; set; }
 
-        [Column(TypeName = "datetime2")]
         public DateTime Date { get; set; }
 
         public int RoomOccupancyCount { get; set; }
@@ -46,7 +45,6 @@ namespace Housing.Forecast.Context.Models
 
         public string Location { get; set; }
 
-        [Column(TypeName = "datetime2")]
         public DateTime Created { get; set; }
     }
 }

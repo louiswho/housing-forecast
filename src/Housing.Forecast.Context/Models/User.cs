@@ -67,10 +67,8 @@ namespace Housing.Forecast.Context.Models
 
         public Batch Batch { get; set; }
 
-        [Column(TypeName = "datetime2")]
         public DateTime Created { get; set; }
 
-        [Column(TypeName = "datetime2")]
         public DateTime? Deleted { get; set; }
     }
         

@@ -44,10 +44,8 @@ namespace Housing.Forecast.Context.Models
 
         public Guid BatchId { get; set; }
 
-        [Column(TypeName = "datetime2")]
         public DateTime StartDate { get; set; }
 
-        [Column(TypeName = "datetime2")]
         public DateTime EndDate { get; set; }
 
         public string BatchName { get; set; }
@@ -58,10 +56,8 @@ namespace Housing.Forecast.Context.Models
 
         public string State { get; set; }
 
-        [Column(TypeName = "datetime2")]
         public DateTime Created { get; set; }
 
-        [Column(TypeName = "datetime2")]
         public DateTime? Deleted { get; set; }
 
         [JsonIgnore]

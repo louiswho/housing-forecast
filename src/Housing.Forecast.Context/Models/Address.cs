@@ -62,7 +62,6 @@ namespace Housing.Forecast.Context.Models
 
         public string Country { get; set; }
 
-        [Column(TypeName = "datetime2")]
         public DateTime Created { get; set; }
 
         [JsonIgnore]
