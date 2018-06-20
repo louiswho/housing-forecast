@@ -1,8 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.Http;
 using System.Threading.Tasks;
+using AutoMapper;
 using Housing.Forecast.Context;
+using Housing.Forecast.Context.ApiAccessors;
 using Housing.Forecast.Context.Models;
 using Housing.Forecast.Context.Repos;
 using Microsoft.EntityFrameworkCore;
@@ -12,7 +15,15 @@ namespace Housing.Forecast.Service
 {
     public static class Seeder
     {
-        public static void Initialize(IServiceProvider serviceProvider)
+        /// <summary>
+        /// Function for intitial seeding of database upon deployment
+        /// </summary>
+        /// <remarks>
+        /// First, mock historical snapshot data is seeded.
+        /// Next, API requests are made to obtain servicehub data which is also seeded.
+        /// Finally, snapshots based on the current date are created for all locations.
+        /// </remarks>
+        public static async Task Initialize(IServiceProvider serviceProvider)
         {
             using (var context =
                 new ForecastContext(serviceProvider.GetRequiredService<DbContextOptions<ForecastContext>>()))
@@ -345,7 +356,19 @@ namespace Housing.Forecast.Service
                     }
                 );
 
-                context.SaveChanges();
+                ApiMethods api = new ApiMethods(new HttpClient());
+                var batches = await api.HttpGetFromApi<Batch>("9040", "Batches");
+                api = new ApiMethods(new HttpClient());
+                var users = await api.HttpGetFromApi<User>("9050", "User");
+                api = new ApiMethods(new HttpClient());
+                var rooms = await api.HttpGetFromApi<Room>("9030", "Rooms");
+
+                await context.Batches.AddRangeAsync(batches);
+                await context.Users.AddRangeAsync(users);
+                await context.Rooms.AddRangeAsync(rooms);
+
+                Poller poller = new Poller(context, TimeSpan.FromDays(1), new ApiMethods(new HttpClient()));
+                await poller.AddSnapshots(users, rooms);
             }
 
         }

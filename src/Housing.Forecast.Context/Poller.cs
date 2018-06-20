@@ -339,7 +339,7 @@ namespace Housing.Forecast.Context
         /// creates a snapshot for the most recent data to
         /// put in the database for the current date.
         /// </remarks>
-        public void AddSnapshots(ICollection<User> users, ICollection<Room> rooms)
+        public async Task AddSnapshots(ICollection<User> users, ICollection<Room> rooms)
         {
             IEnumerable<string> locations = rooms.Select(x => x.Location).Distinct();
 
@@ -372,7 +372,7 @@ namespace Housing.Forecast.Context
                     Created = DateTime.Today
                 }
             );
-            _context.SaveChangesAsync();
+            await _context.SaveChangesAsync();
         }
 
         /// <summary>
