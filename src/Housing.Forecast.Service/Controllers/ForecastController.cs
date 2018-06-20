@@ -148,7 +148,7 @@ namespace Housing.Forecast.Service.Controllers
                     return BadRequest("Not valid input");
                 }
 
-                IList<Snapshot> snapshots = await _snapshot.GetBetweenDatesAsync(startDate, endDate);
+                IList<Snapshot> snapshots = await _snapshot.GetBetweenDatesAtLocationAsync(startDate, endDate, "All");
 
                 if (snapshots == null || snapshots.Count == 0)
                 {
@@ -307,9 +307,9 @@ namespace Housing.Forecast.Service.Controllers
                 // Remove 'All' from the cities list
                 cities.Remove("All");
 
-                foreach (var city in cities)
+                for (int i = 0; i < cities.Count; i++)
                 {
-                    city.ToLower();
+                    cities[i] = cities[i].ToLower();
                 }
 
                 if (end == null)
