@@ -119,22 +119,13 @@ namespace Housing.Forecast.Context.Repos
         /// <returns>
         /// Returns true if the snapshots are added successfully else return false.
         /// </returns>
-        public async Task<bool> AddSnapshotsAsync(IEnumerable<Snapshot> snapshots)
+        public async Task AddSnapshotsAsync(IEnumerable<Snapshot> snapshots)
         {
-            try
+            foreach (var snap in snapshots)
             {
-                foreach (var snap in snapshots)
-                {
-                    _context.Snapshots.Add(snap);
-                }
-                await _context.SaveChangesAsync(default (CancellationToken));
-
-                return true;
+                _context.Snapshots.Add(snap);
             }
-            catch (Exception ex)
-            {
-                return false;
-            }
+            await _context.SaveChangesAsync(default (CancellationToken));
         }
 
         /// <summary>
