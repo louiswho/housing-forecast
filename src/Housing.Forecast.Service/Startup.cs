@@ -29,8 +29,8 @@ namespace Housing.Forecast.Service
         {
             services.AddCors(options =>
             {
-                options.AddPolicy("AllowInterface",
-                    builder => builder.WithOrigins("http://ec2-13-57-218-138.us-west-1.compute.amazonaws.com:9000"));
+                options.AddPolicy("AllowAny",
+                    builder => builder.AllowAnyOrigin());
             });
 
             services.AddEntityFrameworkNpgsql().AddDbContext<ForecastContext>(options => options.UseNpgsql((Configuration.GetConnectionString("ForecastDB"))));
@@ -56,7 +56,7 @@ namespace Housing.Forecast.Service
                 app.UseDeveloperExceptionPage();
             }
 
-            app.UseCors("AllowInterface");
+            app.UseCors("AllowAny");
 
             app.UseSwagger();
 
